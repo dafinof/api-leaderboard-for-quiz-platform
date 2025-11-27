@@ -22,6 +22,8 @@ public class UserScore {
 
     private int score;
 
+    private String avatarUrl;
+
     private String username;
 
     @Column(nullable = false)

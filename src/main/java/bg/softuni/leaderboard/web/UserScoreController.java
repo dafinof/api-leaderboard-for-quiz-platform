@@ -2,7 +2,6 @@ package bg.softuni.leaderboard.web;
 
 import bg.softuni.leaderboard.service.UserScoreService;
 import bg.softuni.leaderboard.web.dto.CreateScoreRequest;
-import bg.softuni.leaderboard.web.dto.UpdateScoreRequest;
 import bg.softuni.leaderboard.web.dto.UserScoreResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +26,15 @@ public class UserScoreController {
         return ResponseEntity.ok(topScores);
     }
 
-    @PostMapping
-    public ResponseEntity<UserScoreResponse> saveUserScore(@RequestBody CreateScoreRequest request) {
-        UserScoreResponse response = userScoreService.createScore(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+//    @PostMapping
+//    public ResponseEntity<UserScoreResponse> saveUserScore(@RequestBody CreateScoreRequest request) {
+//        UserScoreResponse response = userScoreService.createScore(request);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserScoreResponse> updateUserScore(@PathVariable UUID id, @RequestBody UpdateScoreRequest request) {
-        UserScoreResponse response = userScoreService.updateScore(id, request);
+    public ResponseEntity<UserScoreResponse> upsertUserScore(@PathVariable UUID id, @RequestBody CreateScoreRequest request) {
+        UserScoreResponse response = userScoreService.upsertScore(id, request);
         return ResponseEntity.ok(response);
     }
 

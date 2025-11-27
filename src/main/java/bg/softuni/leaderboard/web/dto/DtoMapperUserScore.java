@@ -9,6 +9,8 @@ public class DtoMapperUserScore {
         return UserScoreResponse.builder()
                 .id(userScore.getId())
                 .userId(userScore.getUserId())
+                .username(userScore.getUsername())
+                .avatarUrl(userScore.getAvatarUrl())
                 .score(userScore.getScore())
                 .updatedOn(userScore.getUpdatedOn())
                 .build();

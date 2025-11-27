@@ -23,27 +23,30 @@ public class UserScoreService {
         this.repository = repository;
     }
 
-    public UserScoreResponse createScore(CreateScoreRequest request) {
-        UserScore userScore = UserScore.builder()
-                .userId(request.getUserId())
-                .username(request.getUsername())
-                .score(request.getScore())
-                .updatedOn(LocalDateTime.now())
-                .build();
+    public UserScoreResponse upsertScore(UUID id, CreateScoreRequest request) {
+        UserScore userScore = null;
 
-        repository.save(userScore);
-
-        return DtoMapperUserScore.fromUserScoreToUserScoreResponse(userScore);
-    }
-
-    public UserScoreResponse updateScore(UUID id, UpdateScoreRequest request) {
-        UserScore userScore = repository.findById(id).orElse(null);
-        if (userScore == null) {
-            throw new RuntimeException("User id not found");
+        List<UserScore> allScores = repository.findAll();
+        for (int i = 0; i < allScores.size(); i++) {
+            if (allScores.get(i).getUserId().equals(id)) {
+                userScore = allScores.get(i);
+                break;
+            }
         }
 
-        userScore.setScore(userScore.getScore() + request.getScore());
-        userScore.setUpdatedOn(LocalDateTime.now());
+        if (userScore == null) {
+            userScore = UserScore.builder()
+                    .userId(request.getUserId())
+                    .username(request.getUsername())
+                    .avatarUrl(request.getAvatarUrl())
+                    .score(request.getScore())
+                    .updatedOn(LocalDateTime.now())
+                    .build();
+        } else {
+            userScore.setScore(request.getScore());
+            userScore.setUpdatedOn(LocalDateTime.now());
+        }
+
         userScore = repository.save(userScore);
 
         return DtoMapperUserScore.fromUserScoreToUserScoreResponse(userScore);
