@@ -4,8 +4,9 @@ import bg.softuni.leaderboard.model.UserScore;
 import bg.softuni.leaderboard.repository.UserScoreRepository;
 import bg.softuni.leaderboard.web.dto.CreateScoreRequest;
 import bg.softuni.leaderboard.web.dto.DtoMapperUserScore;
-import bg.softuni.leaderboard.web.dto.UpdateScoreRequest;
 import bg.softuni.leaderboard.web.dto.UserScoreResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserScoreService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserScoreService.class);
 
     private final UserScoreRepository repository;
 
@@ -24,6 +26,8 @@ public class UserScoreService {
     }
 
     public UserScoreResponse upsertScore(UUID id, CreateScoreRequest request) {
+        logger.info("Received request to upsert score for userId={}", id);
+
         UserScore userScore = null;
 
         List<UserScore> allScores = repository.findAll();
@@ -35,6 +39,8 @@ public class UserScoreService {
         }
 
         if (userScore == null) {
+            logger.info("No score found for userId={}, creating new score entry", id);
+
             userScore = UserScore.builder()
                     .userId(request.getUserId())
                     .username(request.getUsername())
@@ -43,6 +49,8 @@ public class UserScoreService {
                     .updatedOn(LocalDateTime.now())
                     .build();
         } else {
+            logger.info("Updating existing score for userId={} to new score={}", id, request.getScore());
+
             userScore.setScore(request.getScore());
             userScore.setUpdatedOn(LocalDateTime.now());
         }
