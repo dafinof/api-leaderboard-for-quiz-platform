@@ -4,6 +4,7 @@ import bg.softuni.leaderboard.model.UserScore;
 import bg.softuni.leaderboard.repository.UserScoreRepository;
 import bg.softuni.leaderboard.web.dto.CreateScoreRequest;
 import bg.softuni.leaderboard.web.dto.DtoMapperUserScore;
+import bg.softuni.leaderboard.exception.ScoreNotFoundException;
 import bg.softuni.leaderboard.web.dto.UserScoreResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,7 @@ public class UserScoreService {
 
     public void deleteScore(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("User id not found");
+            throw new ScoreNotFoundException(id);
         }
         repository.deleteById(id);
     }
@@ -75,6 +76,12 @@ public class UserScoreService {
     }
 
     public void deleteAllScores() {
+        long count = repository.count();
+
+        if (count == 0) {
+            throw new ScoreNotFoundException("No scores available to delete");
+        }
+
         repository.deleteAll();
     }
 }
