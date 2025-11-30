@@ -20,31 +20,25 @@ public class UserScoreController {
         this.userScoreService = userScoreService;
     }
 
-    @GetMapping("/top")
+    @GetMapping("/v1/top")
     public ResponseEntity<List<UserScoreResponse>> topScores() {
         List<UserScoreResponse> topScores = userScoreService.getTopScores();
         return ResponseEntity.ok(topScores);
     }
 
-//    @PostMapping
-//    public ResponseEntity<UserScoreResponse> saveUserScore(@RequestBody CreateScoreRequest request) {
-//        UserScoreResponse response = userScoreService.createScore(request);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
-
-    @PutMapping("/{id}")
+    @PutMapping("/v1/{id}")
     public ResponseEntity<UserScoreResponse> upsertUserScore(@PathVariable UUID id, @RequestBody CreateScoreRequest request) {
         UserScoreResponse response = userScoreService.upsertScore(id, request);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/v1/{id}")
     public ResponseEntity<Void> deleteUserScore(@PathVariable UUID id) {
         userScoreService.deleteScore(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/v1")
     public ResponseEntity<Void> deleteAllScores() {
         userScoreService.deleteAllScores();
         return ResponseEntity.noContent().build();
