@@ -3,7 +3,6 @@ package bg.softuni.leaderboard.web;
 import bg.softuni.leaderboard.service.UserScoreService;
 import bg.softuni.leaderboard.web.dto.CreateScoreRequest;
 import bg.softuni.leaderboard.web.dto.UserScoreResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
