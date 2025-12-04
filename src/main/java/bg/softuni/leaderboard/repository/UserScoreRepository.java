@@ -1,7 +1,6 @@
 package bg.softuni.leaderboard.repository;
 
 import bg.softuni.leaderboard.model.UserScore;
-import bg.softuni.leaderboard.web.dto.UserScoreResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
